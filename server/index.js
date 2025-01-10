@@ -45,4 +45,13 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{
     app.listen(PORT, ()=> console.log(`Server is running on port: ${PORT}`));
 }).catch((error)=>{
     console.log(`${error} did not connect`);
-})
+});
+
+// ROUTES WITH FILES
+import {register} from './controllers/auth.js';
+// This is a seperate controller because of the file upload
+app.post('/auth/register', upload.single('picture'), register);
+
+// ROUTES
+import {authRoutes} from './routes/auth.js';
+app.use('/auth', authRoutes);
