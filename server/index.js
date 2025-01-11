@@ -39,6 +39,17 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage: storage});
 
+// ROUTES WITH FILES
+import {register} from './controllers/auth.js';
+// This is a seperate controller because of the file upload
+app.post('/auth/register', upload.single('picture'), register);
+
+// ROUTES
+import authRoutes from './routes/auth.js';
+app.use('/auth', authRoutes);
+import userRoutes from './routes/users.js';
+app.use('/users', userRoutes);
+
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL).then(()=>{
@@ -46,12 +57,3 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{
 }).catch((error)=>{
     console.log(`${error} did not connect`);
 });
-
-// ROUTES WITH FILES
-import {register} from './controllers/auth.js';
-// This is a seperate controller because of the file upload
-app.post('/auth/register', upload.single('picture'), register);
-
-// ROUTES
-import {authRoutes} from './routes/auth.js';
-app.use('/auth', authRoutes);
