@@ -43,12 +43,17 @@ const upload = multer({storage: storage});
 import {register} from './controllers/auth.js';
 // This is a seperate controller because of the file upload
 app.post('/auth/register', upload.single('picture'), register);
+import {createPost} from './controllers/posts.js';
+app.post('/posts', verifyToken, upload.single('image'), createPost);
+
 
 // ROUTES
 import authRoutes from './routes/auth.js';
 app.use('/auth', authRoutes);
 import userRoutes from './routes/users.js';
 app.use('/users', userRoutes);
+import postRoutes from './routes/posts.js';
+app.use('/posts', postRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
